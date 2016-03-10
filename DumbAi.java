@@ -3,7 +3,10 @@ public class DumbAi{
 
    public static int[][] solve(int[][] board){
       b = board;
+      long start = System.nanoTime();
       if(solveMe(b)){
+         long end = System.nanoTime();
+         System.out.println("It took " + (end - start)/1000000 + " milliseconds");
          return b;
       }
       return board;
@@ -59,7 +62,10 @@ public class DumbAi{
                       {1, 3, 0, 0, 0, 0, 2, 5, 0},
                       {0, 0, 0, 0, 0, 0, 0, 7, 4},
                       {0, 0, 5, 2, 0, 6, 3, 0, 0}};
+      long start = System.nanoTime();
       if(solveMe(test)){
+         long end = System.nanoTime();
+         System.out.println((end - start)/1000000 + " milliseconds");
          SudokuGame.printBoard(test);
       }
    }
