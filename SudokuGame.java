@@ -4,7 +4,8 @@
  */
 public class SudokuGame {
    private int[][] board;
-   private static final int[][] BEGINBOARD = {{1,2,3,4,5,6,7,8,9},
+   private static final int[][] BEGINBOARD = {
+                                 {1,2,3,4,5,6,7,8,9},
                                  {4,5,6,7,8,9,1,2,3},
                                  {7,8,9,1,2,3,4,5,6},
                                  {2,3,4,5,6,7,8,9,1},
@@ -18,6 +19,10 @@ public class SudokuGame {
       board = b;
    }
 
+   public SudokuGame(int diff){
+      board = generateBoard(diff);
+   }
+
    public int get(int i, int j){
       return board[i][j];
    }
@@ -29,11 +34,11 @@ public class SudokuGame {
    public int[][] getBoard(){
       return board;
    }
-
+   /*
    public String toString(){
       return board.toString();
    }
-
+   */
    public static boolean checkRow(int[][] b, int row, int val){
       for(int i = 0; i < 9;i++){
          if(b[row][i]==val){
@@ -71,24 +76,25 @@ public class SudokuGame {
          && checkSec(b, secRow, secCol, val);
    }
 
-   public static void printBoard(int[][] b){
-      //System.out.println("+---+---+---+");
+   public void printBoard(){
+      System.out.println("  +012+345+678+");
       for(int r = 0; r < 9; r++){
          if (r%3 == 0){
-            System.out.println("+---+---+---+");
+            System.out.println("  +---+---+---+");
          }
+         System.out.print(r + " ");
          //System.out.print("|");
          for(int c = 0; c < 9; c++){
             if (c%3 == 0){
                System.out.print("|");
             }
-            System.out.print(b[r][c]);
+            System.out.print(board[r][c]);
          }
          System.out.print("|");
          //System.out.print("|");
          System.out.println();
       }
-      System.out.println("+---+---+---+");
+      System.out.println("  +---+---+---+");
    }
 
    public static int[][] generateBoard(int difficulty){
