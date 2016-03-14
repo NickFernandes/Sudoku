@@ -1,196 +1,202 @@
-/* I am trying to add a 3d array that will keep track of possible values for the given cell so we can start
-   start at cells with the least possible values and get rid of cells with only one value. Using this we can
-   apply additional Sudoku tricks to increase the solve speed - 3/10/16 Nick
-*/
+import java.util.Arrays;
 public class SmartAi{
-   private static int[][] b;
-   private static boolean[][][] findPosVals;
 
-   public static int[][] solve(int[][] board){
-      b = board;
-      long start = System.nanoTime();
-      findPosVals = trackPosVals(b);
-      if(solveMe(b, findPosVals, numOfPosVals(findPosVals))){
-         long end = System.nanoTime();
-         System.out.println("It took " + (end - start)/1000000 + " milliseconds");
-         return b;
-      }
-      return board;
-   }
+   private final static int[] allowedBitFields = new int[] {
+      0,       //000000000
+      1,       //000000001
+      1 << 1,  //000000010
+      1 << 2,  //000000100
+      1 << 3,  //000001000
+      1 << 4,  //000010000
+      1 << 5,  //000100000
+      1 << 6,  //001000000
+      1 << 7,  //010000000
+      1 << 8,  //100000000
+   };
 
-   private static boolean solveMe(int[][] board, boolean[][][] b2, int[][] b3){
-      board = solveSingle(board,b2,b3);
-      b2 = trackPosVals(board);
-      b3 = numOfPosVals(b2);
-      int row = findUnassignedRow(board, b3);
-      int col = findUnassignedCol(board, b3);
-      if(row == 10 && col == 10){
-         return true;
-      }
-      int[] posVals = findPosVals(row, col, b2);
-      for(int val: posVals){
-         if(SudokuGame.checkAll(board, row, col, val)){
-            board[row][col] = val;
-            for(int i = 0; i < 9; i++){
-               b2[row][i][val-1]=b2[i][col][val-1]=false;
-            }
-            int secRow = row - row%3;
-            int secCol = col - col%3;
-            for(int r = 0; r < 3; r++){
-               for(int c = 0; c < 3; c++){
-                  b2[r + secRow][c + secCol][val-1]=false;
-               }
-            }
-            b3[row][col] = 0;
-            SudokuGame game2 = new SudokuGame(board);
-            game2.printBoard();
-            if(solveMe(board, b2, b3)){
-               return true;
-            }
-            board[row][col] = 0;
-            for(int i = 0; i < 9; i++){
-               b2[row][i][val-1]=b2[i][col][val-1]=true;
-            }
-            for(int r = 0; r < 3; r++){
-               for(int c = 0; c < 3; c++){
-                  b2[r + secRow][c + secCol][val-1] = true;
-               }
-            }
-            b3 = numOfPosVals(b2);
-         }
-      }
-      return false;
-   }
-
-   private static int findUnassignedRow(int[][] board, int[][] b2){
-      int min =10;
-      int minrow =10;
-      int temp=0;
-      for(int r = 0; r < 9; r++){
-         for(int c = 0; c < 9; c++){
-            temp = b2[r][c];
-            if(temp < min && temp != 0){
-               min = temp;
-               minrow = r;
-            }
-         }
-      }
-      return minrow;
-   }
-
-   private static int findUnassignedCol(int[][] board, int[][] b2){
-      int min = 10;
-      int mincol = 10;
-      int temp=0;
-      for(int r = 0; r < 9; r++){
-         for(int c = 0; c < 9; c++){
-            temp = b2[r][c];
-            if(temp < min && temp !=0){
-               mincol = c;
-               min = temp;
-            }
-         }
-      }
-      return mincol;
-   }
+   private final static int allAllowed = 511; //111111111
 
    public static void main(String[] args){
-      int[][] test = {{3, 0, 6, 5, 0, 8, 4, 0, 0},
-                      {5, 2, 0, 0, 0, 0, 0, 0, 0},
-                      {0, 8, 7, 0, 0, 0, 0, 3, 1},
-                      {0, 0, 3, 0, 1, 0, 0, 8, 0},
-                      {9, 0, 0, 8, 6, 3, 0, 0, 5},
-                      {0, 5, 0, 0, 9, 0, 6, 0, 0},
-                      {1, 3, 0, 0, 0, 0, 2, 5, 0},
-                      {0, 0, 0, 0, 0, 0, 0, 7, 4},
-                      {0, 0, 5, 2, 0, 6, 3, 0, 0}};
-      //SudokuGame.printBoard(test);
-      System.out.println("");
-      long start = System.nanoTime();
-      findPosVals = trackPosVals(test);
-      if(solveMe(test, findPosVals, numOfPosVals(findPosVals))){
-         long end = System.nanoTime();
-         SudokuGame gaem = new SudokuGame(test);
-         gaem.printBoard();
-         System.out.println("It took " + (end - start)/1000000 + " milliseconds");
+      solveBoard(new int[9][9]);
+      try{
+         Thread.sleep(1000);
       }
-      System.out.println("Fail");
+      catch(java.lang.InterruptedException e1){
+         e1.printStackTrace();
+      }
+      final int[][] board = new int[][] {
+               {0,3,0,6,0,5,0,0,0},
+               {6,0,0,0,9,0,0,0,2},
+               {0,7,0,1,0,0,0,0,6},
+               {0,9,0,0,0,0,0,0,0},
+               {8,1,0,0,5,0,0,6,9},
+               {0,0,0,0,0,0,0,8,0},
+               {4,0,0,0,0,3,0,2,0},
+               {9,0,0,0,2,0,0,0,5},
+               {0,0,0,9,0,8,0,3,0}};
+      printBoard(board);
+      final long start = System.nanoTime();
+      if(81 == solveBoard(board)){
+         final long after = System.nanoTime();
+         System.out.println("Finished in "+((after-start)/1000000)+" milliseconds");
+         printBoard(board);
+      }
+      else{
+         System.out.println("Fail");
+      }
    }
 
-   public static boolean[][][] trackPosVals(int[][] board){
-      findPosVals = new boolean[9][9][9];
+   private final static int solveBoard(final int[][] board){
+      final int[][] allowedValues = new int[9][9];
+      int placedNumberCount = 0;
+      for(int[] allowedValuesRow : allowedValues){
+         Arrays.fill(allowedValuesRow, allAllowed);
+      }
       for(int r = 0; r < 9; r++){
          for(int c = 0; c < 9; c++){
-            for(int i = 0; i < 9; i++){
-               if(board[r][c] == 0 && SudokuGame.checkAll(board, r, c, i+1)){
-                  findPosVals[r][c][i] = true;
-               }
+            if(board[r][c] > 0){
+               allowedValues[r][c] = 0;
+               applyAllowedValuesMask(board, allowedValues, r,c);
+               placedNumberCount++;
             }
          }
       }
-      return findPosVals;
+      return solveBoard(board, allowedValues, placedNumberCount);
    }
 
-   public static int[] findPosVals(int row, int col, boolean[][][] b2){
-      int count=0;
-      for(int i = 0; i < 9; i++){
-         if(b2[row][col][i]){
-            count++;
-         }
+   private final static int solveBoard(final int[][] board, final int[][]
+           allowedValues, int placedNumberCount){
+      int lastPlacedNumbersCount = 0;
+      while(placedNumberCount - lastPlacedNumbersCount > 3 &&
+            placedNumberCount < 68 &&
+            placedNumberCount > 10){
+         lastPlacedNumbersCount = placedNumberCount;
+         placedNumberCount += solveSingle(board, allowedValues);
       }
-      int[] posVals = new int[count];
-      count = 0;
-      for(int i = 0; i < 9; i++){
-         if(b2[row][col][i]){
-            posVals[count]=i+1;
-            count++;
-         }
-      }
-      return posVals;
-   }
-
-   public static int[][] numOfPosVals(boolean[][][] b2){
-      int count = 0;
-      int[][] numVals = new int[9][9];
-      for(int r =0; r < 9; r++){
-         for(int c = 0; c < 9; c++){
-            for(int i = 0; i < 9; i++){
-               if(b2[r][c][i]){
-                  count++;
-               }
-            }
-            numVals[r][c] = count;
-            count = 0;
-         }
-      }
-      return numVals;
-   }
-
-   public static int[][] solveSingle(int[][] board, boolean[][][] b2, int[][] b3){
-      int val = 0;
-      int[] temp;
-      for(int r = 0; r < 9; r++){
-         for(int c = 0; c < 9; c++){
-            temp = findPosVals(r, c, b2);
-            if(temp.length == 1){
-               val = temp[0];
-               board[r][c] = val;
-               for(int i = 0; i < 9; i++){
-                  b2[r][i][val-1]=b2[i][c][val-1]=false;
-               }
-               int secRow = r - r%3;
-               int secCol = c - c%3;
-               for(int r1 = 0; r1 < 3; r1++){
-                  for(int c1 = 0; c1 < 3; c1++){
-                     b2[r1 + secRow][c1 + secCol][val-1]=false;
+      if(placedNumberCount < 81){
+         final int[][] recursiveBoard = attemptRecursion(board, allowedValues, placedNumberCount);
+         if(recursiveBoard != null){
+            placedNumberCount = 0;
+            for(int r =0; r < 9; r++){
+               for(int c = 0; c < 9; c++){
+                  board[r][c] = recursiveBoard[r][c];
+                  if(recursiveBoard[r][c] > 0){
+                     placedNumberCount++;
                   }
                }
-               b3[r][c] = 0;
-               r = 0;
-               c = 0;
             }
          }
       }
-      return board;
+      return placedNumberCount;
+   }
+
+   private final static int[][] attemptRecursion(final int[][] board, final
+           int[][] allowedValues, final int placedNumberCount){
+      for(int r =0;r < 9; r++){
+         final int[] allowedValuesRow = allowedValues[r];
+         final int[] boardRow = board[r];
+         for(int c = 0; c < 9; c++){
+            if(boardRow[c] == 0){
+               for(int val = 1; val <= 9;val++){
+                  if((allowedValuesRow[c] & allowedBitFields[val]) > 0){
+                     final int[][] testBoard = copyBoard(board);
+                     final int[][] testAllowedValues = copyBoard(allowedValues);
+                     setValue(testBoard, testAllowedValues, val, r, c);
+                     final int placedNumbers = solveBoard(testBoard,
+                     testAllowedValues, placedNumberCount + 1);
+                     if(placedNumbers == 81){
+                        return testBoard;
+                     }
+                  }
+               }
+            return null;
+            }
+         }
+      }
+      return null;
+   }
+
+   private final static int solveSingle(final int[][] board, final int[][] allowedValues){
+      int moveCount = 0;
+      for(int r = 0; r < 9; r++){
+         final int[] allowedValuesRow = allowedValues[r];
+         for(int c = 0; c < 9; c++){
+            final int currentAllowedValues = allowedValuesRow[c];
+            if(countSetBits(currentAllowedValues) == 1){
+               setValue(board, allowedValues,
+               getLastSetBitIndex(currentAllowedValues), r , c);
+               moveCount++;
+            }
+         }
+      }
+      return moveCount;
+   }
+
+   private final static void setValue(final int[][] board, final int[][]
+           allowedValues, final int value, final int r, final int c){
+      board[r][c] = value;
+      allowedValues[r][c] = 0;
+      applyAllowedValuesMask(board, allowedValues, r, c);
+   }
+
+   private final static int getLastSetBitIndex(int value){
+      int bitIndex =0;
+      while(value > 0){
+         bitIndex++;
+         value >>=1;
+      }
+      return bitIndex;
+   }
+
+   private final static void applyAllowedValuesMask(final int[][] board, final
+           int[][] allowedValues, final int r, final int c){
+      final int mask = ~allowedBitFields[board[r][c]];
+      for(int i = 0; i < 9; i++){
+         allowedValues[i][c] &= mask;
+      }
+      final int[] allowedValuesRow = allowedValues[r];
+      for(int i = 0; i < 9; i++){
+         allowedValuesRow[i] &= mask;
+      }
+      final int secRow = r - r%3;
+      final int secCol = c - c%3;
+      for(int i = 0; i < 3; i++){
+         for(int j =0; j < 3; j++){
+            allowedValues[secRow + i][secCol + j] &= mask;
+         }
+      }
+   }
+
+   private final static int countSetBits(int value){
+      int count = 0;
+      while(value>0){
+         value = value & (value - 1);
+         count++;
+      }
+      return count;
+   }
+
+   private final static int[][] copyBoard(final int[][] matrix){
+      return new int[][]{
+         Arrays.copyOf(matrix[0], 9),
+         Arrays.copyOf(matrix[1], 9),
+         Arrays.copyOf(matrix[2], 9),
+         Arrays.copyOf(matrix[3], 9),
+         Arrays.copyOf(matrix[4], 9),
+         Arrays.copyOf(matrix[5], 9),
+         Arrays.copyOf(matrix[6], 9),
+         Arrays.copyOf(matrix[7], 9),
+         Arrays.copyOf(matrix[8], 9),
+      };
+   }
+
+   private final static void printBoard(final int[][] board){
+      for(int c = 0; c < 9; c++){
+         for(int r = 0; r < 9; r++){
+            System.out.print(board[r][c]);
+         }
+         System.out.println();
+      }
+      System.out.println();
    }
 }

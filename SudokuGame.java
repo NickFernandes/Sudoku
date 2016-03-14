@@ -77,7 +77,7 @@ public class SudokuGame {
             if (c%3 == 0){
                System.out.print("|");
             }
-            System.out.print(board[r][c]);
+            System.out.print(board[c][r]);
          }
          System.out.print("|");
          //System.out.print("|");
