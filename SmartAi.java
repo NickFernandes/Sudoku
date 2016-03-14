@@ -42,7 +42,8 @@ public class SmartAi{
                }
             }
             b3[row][col] = 0;
-            SudokuGame.printBoard(board);
+            SudokuGame game2 = new SudokuGame(board);
+            game2.printBoard();
             if(solveMe(board, b2, b3)){
                return true;
             }
@@ -103,13 +104,14 @@ public class SmartAi{
                       {1, 3, 0, 0, 0, 0, 2, 5, 0},
                       {0, 0, 0, 0, 0, 0, 0, 7, 4},
                       {0, 0, 5, 2, 0, 6, 3, 0, 0}};
-      SudokuGame.printBoard(test);
+      //SudokuGame.printBoard(test);
       System.out.println("");
       long start = System.nanoTime();
       findPosVals = trackPosVals(test);
       if(solveMe(test, findPosVals, numOfPosVals(findPosVals))){
          long end = System.nanoTime();
-         SudokuGame.printBoard(test);
+         SudokuGame gaem = new SudokuGame(test);
+         gaem.printBoard();
          System.out.println("It took " + (end - start)/1000000 + " milliseconds");
       }
       System.out.println("Fail");

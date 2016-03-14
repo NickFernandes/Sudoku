@@ -66,7 +66,8 @@ public class DumbAi{
       if(solveMe(test)){
          long end = System.nanoTime();
          System.out.println((end - start)/1000000 + " milliseconds");
-         SudokuGame.printBoard(test);
+         SudokuGame teste = new SudokuGame(test);
+         teste.printBoard();
       }
    }
 }
