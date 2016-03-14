@@ -25,18 +25,9 @@ public class SudokuGame {
       return board.toString();
    }
 
-   public static boolean checkRow(int[][] b, int row, int val){
+   public static boolean checkLines(int[][] b, int row, int col, int val){
       for(int i = 0; i < 9;i++){
-         if(b[row][i]==val){
-            return false;
-         }
-      }
-      return true;
-   }
-
-   public static boolean checkCol(int[][] b, int col, int val){
-      for(int i = 0; i < 9; i++){
-         if(b[i][col]==val){
+         if(b[row][i]==val||b[i][col]==val){
             return false;
          }
       }
@@ -57,9 +48,7 @@ public class SudokuGame {
    public static boolean checkAll(int[][] b, int row, int col, int val){
       int secRow = row - row%3;
       int secCol = col - col%3;
-      return checkRow(b, row, val)
-         && checkCol(b, col , val)
-         && checkSec(b, secRow, secCol, val);
+      return checkLines(b, row, col, val) && checkSec(b, secRow, secCol, val);
    }
 
    public static void printBoard(int[][] b){
@@ -69,5 +58,6 @@ public class SudokuGame {
          }
          System.out.println();
       }
+      System.out.println();
    }
 }
