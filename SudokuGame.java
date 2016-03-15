@@ -98,20 +98,20 @@ public class SudokuGame {
          throw new IllegalArgumentException();
       }
       int[][] newBoard = BEGINBOARD;
-      System.out.println("Starting loop...");
+      //System.out.println("Starting loop...");
       for(int q = 0; q < 100; q++){
-         System.out.println("Started loop...");
+        // System.out.println("Started loop...");
          int r = (int)(Math.random()*5);
          int sw1 = (int)(Math.random()*9);
          int sw2 = (int)(Math.random()*9);
-         System.out.println("Checking equals....");
+         //System.out.println("Checking equals....");
          while (sw2 == sw1){
-            System.out.println(sw1 + "  " + sw2);
+         //   System.out.println(sw1 + "  " + sw2);
             sw2 = (int)(Math.random()*9);
          }
-         System.out.println("Checked equals...");
+         //System.out.println("Checked equals...");
          if (r == 0){
-            System.out.println("r = 0");
+           // System.out.println("r = 0");
             for (int i = 0; i < 9; i ++){
                for (int j = 0; j < 9; j++){
                   if (newBoard[i][j] == sw1){
@@ -121,30 +121,30 @@ public class SudokuGame {
                   }
                }
             }
-            System.out.println("Finished r = 0");
+          //  System.out.println("Finished r = 0");
          }
          if (r == 1){
-            System.out.println("r = 1");
+   //         System.out.println("r = 1");
             int temp = 0;
             for(int i = 0; i < 9; i++){
                temp = newBoard[sw1][i];
                newBoard[sw1][i] = newBoard[sw2][i];
                newBoard[sw2][i] = temp;
             }
-            System.out.println("Finished r = 1");
+          //  System.out.println("Finished r = 1");
          }
          if (r == 2){
-            System.out.println("r = 2");
+     //       System.out.println("r = 2");
             int temp = 0;
             for(int i = 0; i < 9; i ++){
                temp = newBoard[i][sw1];
                newBoard[i][sw1] = newBoard[i][sw2];
                newBoard[i][sw2] = temp;
             }
-            System.out.println("Finished r = 2");
+          //  System.out.println("Finished r = 2");
          }
          if (r == 3){
-            System.out.println("r = 3");
+       //     System.out.println("r = 3");
             int temp = 0;
             int[][] newerBoard = new int[9][9];
             for(int i = 0; i < 9; i++){
@@ -152,12 +152,12 @@ public class SudokuGame {
                   newerBoard[i][j] = newBoard[8 - j][i];
                }
             }
-            System.out.println("Finished r = 3");
+          //  System.out.println("Finished r = 3");
             newBoard = newerBoard;
          }
-      System.out.println("Finished iteration: " + q);
+      //System.out.println("Finished iteration: " + q);
       }
-      System.out.println("starting dig....");
+      //System.out.println("starting dig....");
       for (int i = 0; i < 9; i++){
          for (int j = 0; j < 9; j++){
             if (Math.random() < chance){
@@ -165,7 +165,9 @@ public class SudokuGame {
             }
          }
       }
-      System.out.println("Finished dig!");
+     // System.out.println("Finished dig!");
+      SudokuGame s = new SudokuGame(newBoard);
+      s.printBoard();
       return newBoard;
    }
 }

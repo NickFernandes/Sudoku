@@ -1,6 +1,15 @@
 public class DumbAi{
    private static int[][] b;
 
+   public static long test(int[][] board){
+      b = board;
+      long start = System.currentTimeMillis();
+      if(solveMe(b)){
+         long end = System.currentTimeMillis();
+         return end - start;
+      }
+      return 0;
+   }
    public static int[][] solve(int[][] board){
       b = board;
       long start = System.nanoTime();

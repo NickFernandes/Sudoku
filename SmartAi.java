@@ -16,8 +16,17 @@ public class SmartAi{
 
    private final static int allAllowed = 511; //111111111
 
+   public static long test(final int[][] board){
+      final long start = System.currentTimeMillis();
+      if(81==solve(board)){
+         final long after = System.currentTimeMillis();
+         return after - start;
+      }
+      return 0;
+   }
+
    public static void main(String[] args){
-      solveBoard(new int[9][9]);
+      solve(new int[9][9]);
       try{
          Thread.sleep(1000);
       }
@@ -36,7 +45,7 @@ public class SmartAi{
                {0,0,0,9,0,8,0,3,0}};
       printBoard(board);
       final long start = System.nanoTime();
-      if(81 == solveBoard(board)){
+      if(81 == solve(board)){
          final long after = System.nanoTime();
          System.out.println("Finished in "+((after-start)/1000000)+" milliseconds");
          printBoard(board);
@@ -46,7 +55,7 @@ public class SmartAi{
       }
    }
 
-   private final static int solveBoard(final int[][] board){
+   private final static int solve(final int[][] board){
       final int[][] allowedValues = new int[9][9];
       int placedNumberCount = 0;
       for(int[] allowedValuesRow : allowedValues){
@@ -72,6 +81,7 @@ public class SmartAi{
             placedNumberCount > 10){
          lastPlacedNumbersCount = placedNumberCount;
          placedNumberCount += solveSingle(board, allowedValues);
+         applyNakedPairs(allowedValues);
       }
       if(placedNumberCount < 81){
          final int[][] recursiveBoard = attemptRecursion(board, allowedValues, placedNumberCount);
@@ -130,6 +140,43 @@ public class SmartAi{
          }
       }
       return moveCount;
+   }
+
+   private final static void applyNakedPairs(final int[][] allowedValues){
+      for(int r = 0; r<9;r++){
+         for(int c = 0; c < 9; c++){
+            final int val = allowedValues[r][c];
+            if(countSetBits(val)==2){
+               for(int scanC = c+1; scanC < 9; scanC++){
+                  if(allowedValues[r][scanC] == val){
+                     final int removeMask = ~val;
+                     for(int applyC =0; applyC < 9; applyC++){
+                        if(applyC != c && applyC != scanC){
+                           allowedValues[r][applyC] &= removeMask;
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+      for(int r =0; r < 9; r++){
+         for(int c = 0; c < 9; c++){
+            final int val = allowedValues[r][c];
+            if(countSetBits(val) == 2){
+               for(int scanR = r+1 ; scanR < 9 ;scanR++){
+                  if(allowedValues[scanR][c] == val){
+                     final int removeMask = ~val;
+                     for(int applyR = 0;applyR < 9;applyR++){
+                        if(applyR != r && applyR != scanR){
+                           allowedValues[applyR][c] &= removeMask;
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
    }
 
    private final static void setValue(final int[][] board, final int[][]
