@@ -323,7 +323,7 @@ public class SudokuGame {
       //System.out.println("starting dig....");
       for (int i = 0; i < 9; i++){
          for (int j = 0; j < 9; j++){
-            if (Math.random() < .1){
+            if (Math.random() < chance){
                newBoard[i][j] = 0;
             }
          }
