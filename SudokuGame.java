@@ -84,6 +84,18 @@ public class SudokuGame {
    }
 
    /**
+    *State whether the element at index i, j is changeable.
+    *
+    *@param i The row of the element.
+    *
+    *@param j The column of the element.
+    *
+    *@param change If it can be changed or not.
+    */
+   public void setChangeable(int i, int j, boolean change){
+      changeable[i][j] = change;
+   }
+   /**
     *Returns the 2D array of the game board.
     *
     *@return The 2D array of the game board.
@@ -105,7 +117,7 @@ public class SudokuGame {
       return changeable[row][col];
    }
 
-   public static boolean checkLines(int[][] b, int row, int col, int val){
+   private static boolean checkLines(int[][] b, int row, int col, int val){
       for(int i = 0; i < 9;i++){
          if(b[row][i]==val||b[i][col]==val){
             return false;
@@ -114,7 +126,7 @@ public class SudokuGame {
       return true;
    }
 
-   public static boolean checkSec(int[][] b, int secRow, int secCol, int val){
+   private static boolean checkSec(int[][] b, int secRow, int secCol, int val){
       for(int r = 0; r < 3; r++){
          for(int c = 0; c < 3; c++){
             if(b[r+secRow][c+secCol] == val){
@@ -124,13 +136,28 @@ public class SudokuGame {
       }
       return true;
    }
-
+   /**
+    *Checks if the value "val" can be placed in the selected spot.
+    *
+    *@param b The game board.
+    *
+    *@param row The selected row.
+    *
+    *@param col The selected col.
+    *
+    *@param val The intended value.
+    *
+    *@return Whether the value can be placed.
+    */
    public static boolean checkAll(int[][] b, int row, int col, int val){
       int secRow = row - row%3;
       int secCol = col - col%3;
       return checkLines(b, row, col, val) && checkSec(b, secRow, secCol, val);
    }
 
+   /**
+   *Checks if the current board is solved.
+   */
    public boolean checkBoardSolved(){
       int[] valuesPassed = new int[9];
       for(int i = 0; i < 9; i ++){

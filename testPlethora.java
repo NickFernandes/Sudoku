@@ -14,8 +14,8 @@ public class testPlethora{
          for(int j = 0; j < 9; j++){
             temp2[j] = Arrays.copyOf(temp[j], 9);
          }
-         smart += SmartAi.test(temp);
-         dumb += DumbAi.test(temp2);
+         //smart += SmartAi.test(temp);
+         //dumb += DumbAi.test(temp2);
          System.out.println(i);
       }
       dumb = dumb/1000;
