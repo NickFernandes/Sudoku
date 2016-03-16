@@ -1,5 +1,8 @@
 /**
- *@author Chris Varanese
+ *The Sudoku Game class, which contains a representation of the board as a
+ *2D array.
+ *
+ *@author Chris Varanese, Nick Fernandes
  *@version Program 7
  */
 public class SudokuGame {
@@ -16,6 +19,12 @@ public class SudokuGame {
                                  {9,1,2,3,4,5,6,7,8}};
    private boolean[][] changeable;
 
+   /**
+    *This will create the game board using a preexisting 2D array.
+    *
+    *@param b The 2D array representation of the board. Should be 9x9 and
+    *contain values 1 - 9.
+    */
    public SudokuGame(int[][] b){
       board = b;
       changeable = new boolean[9][9];
@@ -26,6 +35,11 @@ public class SudokuGame {
       }
    }
 
+   /**
+    *This will create a gameboard of a certain difficulty.
+    *
+    *@param diff The difficulty of the game. Should be 0 - 2.
+    */
    public SudokuGame(int diff){
       changeable = new boolean[9][9];
       board = generateBoard(diff);
@@ -43,22 +57,50 @@ public class SudokuGame {
 
    }
 
+   /**
+    *Returns the element at row i, column j in the game board.
+    *
+    *@param i The row of the desired element.
+    *
+    *@param j The column of the desired element.
+    *
+    *@return The element at the row i and the column j in the game board.
+    */
    public int get(int i, int j){
       return board[i][j];
    }
 
+   /**
+    *This will set the element at the row i and the column j in the game board.
+    *
+    *@param i The row of the element.
+    *
+    *@param j The column of the element.
+    *
+    *@param value The value that is going to be inserted.
+    */
    public void set(int i, int j, int value){
       board[i][j] = value;
    }
 
+   /**
+    *Returns the 2D array of the game board.
+    *
+    *@return The 2D array of the game board.
+    */
    public int[][] getBoard(){
       return board;
    }
 
-   public String toString(){
-      return board.toString();
-   }
-
+   /**
+    *Returns whether the element at row row, column col can be changed.
+    *
+    *@param row The row of the desired element.
+    *
+    *@param col The column of the desired element.
+    *
+    *@return Whether the element at row row, column col can be changed.
+    */
    public boolean getChangeable(int row, int col){
       return changeable[row][col];
    }
@@ -89,6 +131,55 @@ public class SudokuGame {
       return checkLines(b, row, col, val) && checkSec(b, secRow, secCol, val);
    }
 
+   public boolean checkBoardSolved(){
+      int[] valuesPassed = new int[9];
+      for(int i = 0; i < 9; i ++){
+         for(int j = 0; j < 9; j++){
+            if(board[i][j] == 0){
+               return false;
+            }
+            for(int v = 0; v < j; v++){
+               if(board[i][j] == valuesPassed[v]){
+                  //System.out.println("cols");
+                  return false;
+               }
+            }
+            valuesPassed[j] = board[i][j];
+         }
+      }
+      for(int i = 0; i < 9; i ++){
+         for(int j = 0; j < 9; j++){
+            if(board[j][i] == 0){
+               return false;
+            }
+            for(int v = 0; v < j; v++){
+               if(board[j][i] == valuesPassed[v]){
+                  //System.out.println("rows");
+                  return false;
+               }
+            }
+            valuesPassed[j] = board[j][i];
+         }
+      }
+      for(int sec = 0; sec < 9; sec ++){
+         for (int i = 0; i < 3; i ++){
+            for (int j = 0; j < 3; j ++){
+               for (int v = 0; v < 3*i + j; v ++){
+                  if (board[i + sec%3*3][j + (sec/3)*3] == valuesPassed[v]){
+                     System.out.println("secs");
+                     return false;
+                  }
+               }
+               valuesPassed[3*i + j] = board[i + sec%3*3][j+(sec/3)*3];
+            }
+         }
+      }
+      return true;
+   }
+
+   /**
+    *Prints the board in a user-friendly format.
+    */
    public void printBoard(){
       System.out.println("    0 1 2   3 4 5   6 7 8  ");
       for(int r = 0; r < 9; r++){
@@ -110,6 +201,13 @@ public class SudokuGame {
       System.out.println("  + - - - + - - - + - - - +");
    }
 
+   /**
+    *Generates a random Sudoku Board and returns it.
+    *
+    *@param difficulty The difficulty of this game. Should be 0 - 2.
+    *
+    *@return The generated 2D array.
+    */
    public static int[][] generateBoard(int difficulty){
       double chance;
       if (difficulty == 0){
@@ -129,9 +227,9 @@ public class SudokuGame {
          int sw1;
          int sw2;
          if (r == 0){
-            sw1 = (int)(Math.random()*9);
+            sw1 = (int)(Math.random()*9) + 1;
             do {
-               sw2 = (int)(Math.random()*9);
+               sw2 = (int)(Math.random()*9) + 1;
             } while (sw2 == sw1);
             for (int i = 0; i < 9; i ++){
                for (int j = 0; j < 9; j++){
@@ -198,7 +296,7 @@ public class SudokuGame {
       //System.out.println("starting dig....");
       for (int i = 0; i < 9; i++){
          for (int j = 0; j < 9; j++){
-            if (Math.random() < chance){
+            if (Math.random() < .1){
                newBoard[i][j] = 0;
             }
          }

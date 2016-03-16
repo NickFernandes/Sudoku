@@ -8,5 +8,6 @@ public class TestDriver{
       gem = new SudokuGame(board);
       System.out.println("finished board...");
       gem.printBoard();
+      System.out.println(gem.checkBoardSolved());
    }
 }
