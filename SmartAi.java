@@ -1,4 +1,4 @@
-/*
+/**
  *Smart Ai to solve sudoku puzzles
  *
  *@author Nick Fernandes
@@ -22,7 +22,9 @@ public class SmartAi{
 
    private final static int allAllowed = 511; //111111111
 
-  /*
+   private static int[][] b;
+
+  /**
    *Takes in a sudoku game and returns the solved board
    *
    *@param board the intial sudoku board state
@@ -30,8 +32,9 @@ public class SmartAi{
    *@return the solved sudoku board
    */
    public final static int[][] solve(final int[][] board){
-      if(solveMe(board) == 81){
-         return board;
+      b = board;
+      if(solveMe(b) == 81){
+         return b;
       }
       return board;
    }

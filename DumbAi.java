@@ -1,4 +1,4 @@
-/*
+/**
  *Dumb Ai takes sudoku board and solves them
  *
  *@author Nick Fernandes
@@ -7,9 +7,8 @@
 public class DumbAi{
    private static int[][] b;
 
-  /*
+  /**
    *Takes a Sudoku board and returns a solved board and prints how long it took;
-   *
    *
    *@param board The intial sudoku board to be solved
    *

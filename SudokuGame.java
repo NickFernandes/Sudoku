@@ -328,8 +328,9 @@ public class SudokuGame {
             }
          }
       }
-      //SudokuGame s = new SudokuGame(newBoard);
-      //s.printBoard();
+      SudokuGame s = new SudokuGame(newBoard);
+      s.printBoard();
+      System.out.println("Difficulty: " + difficulty);
       return newBoard;
    }
 }
