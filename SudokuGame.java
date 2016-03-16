@@ -14,13 +14,33 @@ public class SudokuGame {
                                  {3,4,5,6,7,8,9,1,2},
                                  {6,7,8,9,1,2,3,4,5},
                                  {9,1,2,3,4,5,6,7,8}};
+   private boolean[][] changeable;
 
    public SudokuGame(int[][] b){
       board = b;
+      changeable = new boolean[9][9];
+      for (int i = 0; i < 9; i ++){
+         for (int j = 0; j < 9; j ++){
+            changeable[i][j] = true;
+         }
+      }
    }
 
    public SudokuGame(int diff){
+      changeable = new boolean[9][9];
       board = generateBoard(diff);
+      for(int i = 0; i < 9; i ++){
+         for (int j = 0; j < 9 ; j ++){
+            //System.out.print(board[i][j]);
+            if (board[i][j] != 0){
+               changeable[i][j] = false;
+            }
+            else {
+               changeable[i][j] = true;
+            }
+         }
+      }
+
    }
 
    public int get(int i, int j){
@@ -37,6 +57,10 @@ public class SudokuGame {
 
    public String toString(){
       return board.toString();
+   }
+
+   public boolean getChangeable(int row, int col){
+      return changeable[row][col];
    }
 
    public static boolean checkLines(int[][] b, int row, int col, int val){
@@ -66,24 +90,24 @@ public class SudokuGame {
    }
 
    public void printBoard(){
-      System.out.println("  +012+345+678+");
+      System.out.println("    0 1 2   3 4 5   6 7 8  ");
       for(int r = 0; r < 9; r++){
          if (r%3 == 0){
-            System.out.println("  +---+---+---+");
+            System.out.println("  + - - - + - - - + - - - +");
          }
          System.out.print(r + " ");
          //System.out.print("|");
          for(int c = 0; c < 9; c++){
             if (c%3 == 0){
-               System.out.print("|");
+               System.out.print("| ");
             }
-            System.out.print(board[c][r]);
+            System.out.print(board[c][r] + " ");
          }
          System.out.print("|");
          //System.out.print("|");
          System.out.println();
       }
-      System.out.println("  +---+---+---+");
+      System.out.println("  + - - - + - - - + - - - +");
    }
 
    public static int[][] generateBoard(int difficulty){
@@ -98,20 +122,18 @@ public class SudokuGame {
          throw new IllegalArgumentException();
       }
       int[][] newBoard = BEGINBOARD;
-      System.out.println("Starting loop...");
+      //System.out.println("Starting loop...");
       for(int q = 0; q < 100; q++){
-         System.out.println("Started loop...");
+         //System.out.println("Started loop...");
          int r = (int)(Math.random()*5);
-         int sw1 = (int)(Math.random()*9);
-         int sw2 = (int)(Math.random()*9);
-         System.out.println("Checking equals....");
-         while (sw2 == sw1){
-            System.out.println(sw1 + "  " + sw2);
-            sw2 = (int)(Math.random()*9);
-         }
-         System.out.println("Checked equals...");
+         int sw1;
+         int sw2;
          if (r == 0){
-            System.out.println("r = 0");
+            sw1 = (int)(Math.random()*9);
+            do {
+               sw2 = (int)(Math.random()*9);
+            } while (sw2 == sw1);
+            //System.out.println("r = 0");
             for (int i = 0; i < 9; i ++){
                for (int j = 0; j < 9; j++){
                   if (newBoard[i][j] == sw1){
@@ -121,30 +143,52 @@ public class SudokuGame {
                   }
                }
             }
-            System.out.println("Finished r = 0");
+            //System.out.println("Finished r = 0");
          }
          if (r == 1){
-            System.out.println("r = 1");
+            //System.out.println("r = 1");
             int temp = 0;
-            for(int i = 0; i < 9; i++){
-               temp = newBoard[sw1][i];
-               newBoard[sw1][i] = newBoard[sw2][i];
-               newBoard[sw2][i] = temp;
+            sw1 = (int)(Math.random()*3);
+            do {
+               sw2 =(int)(Math.random()*3);
+            } while (sw2 == sw1);
+            int swCol = (int)(Math.random()*3);
+            switch (swCol){
+               case 0: break;
+               case 1:
+                  sw1 = sw1 + 3;
+                  sw2 = sw2 + 3;
+                  break;
+               case 2:
+                  sw1 = sw1 + 6;
+                  sw2 = sw2 + 6;
+                  break;
             }
-            System.out.println("Finished r = 1");
-         }
-         if (r == 2){
-            System.out.println("r = 2");
-            int temp = 0;
-            for(int i = 0; i < 9; i ++){
+            for(int i = 0; i < 9; i++){
                temp = newBoard[i][sw1];
                newBoard[i][sw1] = newBoard[i][sw2];
                newBoard[i][sw2] = temp;
             }
-            System.out.println("Finished r = 2");
+            //System.out.println("Finished r = 1");
+         }
+         if (r == 2){
+            //System.out.println("r = 2");
+            sw1 = 3 * (int)(Math.random()*3);
+            do {
+               sw2 = 3 * (int)(Math.random()*3);
+            } while (sw2 == sw1);
+            int temp = 0;
+            for(int i = 0; i < 9; i ++){
+               for(int j = 0; j < 3; j++){
+                  temp = newBoard[i][sw1 + j];
+                  newBoard[i][sw1 + j] = newBoard[i][sw2 + j];
+                  newBoard[i][sw2 + j] = temp;
+               }
+            }
+            //System.out.println("Finished r = 2");
          }
          if (r == 3){
-            System.out.println("r = 3");
+            //System.out.println("r = 3");
             int temp = 0;
             int[][] newerBoard = new int[9][9];
             for(int i = 0; i < 9; i++){
@@ -152,20 +196,21 @@ public class SudokuGame {
                   newerBoard[i][j] = newBoard[8 - j][i];
                }
             }
-            System.out.println("Finished r = 3");
+            //System.out.println("Finished r = 3");
             newBoard = newerBoard;
          }
-      System.out.println("Finished iteration: " + q);
+      //System.out.println("Finished iteration: " + q);
       }
-      System.out.println("starting dig....");
+      //System.out.println("starting dig....");
       for (int i = 0; i < 9; i++){
          for (int j = 0; j < 9; j++){
             if (Math.random() < chance){
                newBoard[i][j] = 0;
+               //changeable[i][j] = true;
             }
          }
       }
-      System.out.println("Finished dig!");
+      //System.out.println("Finished dig!");
       return newBoard;
    }
 }
