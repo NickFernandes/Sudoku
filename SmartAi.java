@@ -18,7 +18,8 @@ public class SmartAi{
 
    public static long test(final int[][] board){
       final long start = System.currentTimeMillis();
-      if(81==solve(board)){
+      final int nums = solve(board);
+      if(nums == 81){
          final long after = System.currentTimeMillis();
          return after - start;
       }
@@ -81,7 +82,9 @@ public class SmartAi{
             placedNumberCount > 10){
          lastPlacedNumbersCount = placedNumberCount;
          placedNumberCount += solveSingle(board, allowedValues);
-         applyNakedPairs(allowedValues);
+         if(placedNumberCount < 35){
+            applyNakedPairs(allowedValues);
+         }
       }
       if(placedNumberCount < 81){
          final int[][] recursiveBoard = attemptRecursion(board, allowedValues, placedNumberCount);
