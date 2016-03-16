@@ -1,3 +1,9 @@
+/*
+ *Smart Ai to solve sudoku puzzles
+ *
+ *@author Nick Fernandes
+ *@version 2.1
+ */
 import java.util.Arrays;
 public class SmartAi{
 
@@ -16,47 +22,21 @@ public class SmartAi{
 
    private final static int allAllowed = 511; //111111111
 
-   public static long test(final int[][] board){
-      final long start = System.currentTimeMillis();
-      final int nums = solve(board);
-      if(nums == 81){
-         final long after = System.currentTimeMillis();
-         return after - start;
+  /*
+   *Takes in a sudoku game and returns the solved board
+   *
+   *@param board the intial sudoku board state
+   *
+   *@return the solved sudoku board
+   */
+   public final static int[][] solve(final int[][] board){
+      if(solveMe(board) == 81){
+         return board;
       }
-      return 0;
+      return board;
    }
 
-   public static void main(String[] args){
-      solve(new int[9][9]);
-      try{
-         Thread.sleep(1000);
-      }
-      catch(java.lang.InterruptedException e1){
-         e1.printStackTrace();
-      }
-      final int[][] board = new int[][] {
-               {0,3,0,6,0,5,0,0,0},
-               {6,0,0,0,9,0,0,0,2},
-               {0,7,0,1,0,0,0,0,6},
-               {0,9,0,0,0,0,0,0,0},
-               {8,1,0,0,5,0,0,6,9},
-               {0,0,0,0,0,0,0,8,0},
-               {4,0,0,0,0,3,0,2,0},
-               {9,0,0,0,2,0,0,0,5},
-               {0,0,0,9,0,8,0,3,0}};
-      printBoard(board);
-      final long start = System.nanoTime();
-      if(81 == solve(board)){
-         final long after = System.nanoTime();
-         System.out.println("Finished in "+((after-start)/1000000)+" milliseconds");
-         printBoard(board);
-      }
-      else{
-         System.out.println("Fail");
-      }
-   }
-
-   private final static int solve(final int[][] board){
+   private final static int solveMe(final int[][] board){
       final int[][] allowedValues = new int[9][9];
       int placedNumberCount = 0;
       for(int[] allowedValuesRow : allowedValues){
@@ -238,15 +218,5 @@ public class SmartAi{
          Arrays.copyOf(matrix[7], 9),
          Arrays.copyOf(matrix[8], 9),
       };
-   }
-
-   private final static void printBoard(final int[][] board){
-      for(int c = 0; c < 9; c++){
-         for(int r = 0; r < 9; r++){
-            System.out.print(board[r][c]);
-         }
-         System.out.println();
-      }
-      System.out.println();
    }
 }

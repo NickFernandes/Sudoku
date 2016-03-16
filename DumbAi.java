@@ -1,15 +1,20 @@
+/*
+ *Dumb Ai takes sudoku board and solves them
+ *
+ *@author Nick Fernandes
+ *@version 1.3
+ */
 public class DumbAi{
    private static int[][] b;
 
-   public static long test(int[][] board){
-      b = board;
-      long start = System.currentTimeMillis();
-      if(solveMe(b)){
-         long end = System.currentTimeMillis();
-         return end - start;
-      }
-      return 0;
-   }
+  /*
+   *Takes a Sudoku board and returns a solved board and prints how long it took;
+   *
+   *
+   *@param board The intial sudoku board to be solved
+   *
+   *@return A solved sudoku board
+   */
    public static int[][] solve(int[][] board){
       b = board;
       long start = System.nanoTime();
@@ -59,32 +64,5 @@ public class DumbAi{
          }
       }
       return -1;
-   }
-
-   public static void main(String[] args){
-      int[][] bleh = new int[9][9];
-      solveMe(bleh);
-      try{
-         Thread.sleep(1000);
-      }
-      catch(java.lang.InterruptedException e1){
-         e1.printStackTrace();
-      }
-      int[][] test = {{0,3,0,6,0,5,0,0,0},
-                      {6,0,0,0,9,0,0,0,2},
-                      {0,7,0,1,0,0,0,0,6},
-                      {0,9,0,0,0,0,0,0,0},
-                      {8,1,0,0,5,0,0,6,9},
-                      {0,0,0,0,0,0,0,8,0},
-                      {4,0,0,0,0,3,0,2,0},
-                      {9,0,0,0,2,0,0,0,5},
-                      {0,0,0,9,0,8,0,3,0}};
-      long start = System.nanoTime();
-      if(solveMe(test)){
-         long end = System.nanoTime();
-         System.out.println((end - start)/1000000 + " milliseconds");
-         SudokuGame teste = new SudokuGame(test);
-         teste.printBoard();
-      }
    }
 }
