@@ -7,6 +7,8 @@ public class testPlethora{
       int difSum = 0;
       int[][] temp = new int[9][9];
       int[][] temp2 = new int[9][9];
+      long t1=0;
+      long t2 =0;
       for(int i =0; i < 1000; i++){
          dif =((int) (Math.random()*3));
          difSum+=dif;
@@ -14,8 +16,13 @@ public class testPlethora{
          for(int j = 0; j < 9; j++){
             temp2[j] = Arrays.copyOf(temp[j], 9);
          }
-         //smart += SmartAi.test(temp);
-         //dumb += DumbAi.test(temp2);
+         t1 = System.currentTimeMillis();
+         temp = SmartAi.solve(temp);
+         t2 = System.currentTimeMillis();
+         smart += (t2 - t1);
+         temp2 = DumbAi.solve(temp2);
+         t1 = System.currentTimeMillis();
+         dumb += (t1 - t2);
          System.out.println(i);
       }
       dumb = dumb/1000;
