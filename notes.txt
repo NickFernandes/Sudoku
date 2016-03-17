@@ -1,0 +1,5 @@
+1. Better Oo, Ai specifically, Object Oriented
+2. Remove duplicate code
+3. Fix the game
+4. Use command line for ai tester
+5. Clean git repository
