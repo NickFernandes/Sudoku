@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 public class AiTest{
-   public static void main(String[] args){
+   public static void main(String[] args) throws Exception {
       File f = new File("gameBoard.txt");
       FileReader fr = new FileReader(f);
       BufferedReader br = new BufferedReader(fr);
@@ -17,8 +17,11 @@ public class AiTest{
             }
          }
       }
+      catch(FileNotFoundException ie){
+      }
       catch(IOException ie){
-         x
+      }
+
       SudokuGame u = new SudokuGame(test);
       u.printBoard();
       test = SmartAi.solve(test);
