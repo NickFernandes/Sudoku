@@ -59,10 +59,8 @@ public class HumanDriver{
                   }
                } catch (FileNotFoundException ex){
                   System.out.println("Could not open file");
-                  System.exit(1);
                } catch (IOException ex){
                   System.out.println("Error reading file");
-                  System.exit(1);
                }
                game = new SudokuGame(gameNums);
                for (int i = 0; i < 9; i ++){
@@ -75,7 +73,11 @@ public class HumanDriver{
                //break
             }
             else {
-               System.out.println("Cannot read file.");
+               System.out.println("Cannot read file. Try again? (y/n)");
+               read = sc.next();
+               if (!(read.equals("y") || read.equals("n"))){
+                  read = "n";
+               }
             }
          }
          if (read.equals("n")){

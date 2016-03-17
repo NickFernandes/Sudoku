@@ -33,7 +33,10 @@ public class SmartAi{
    */
    public final static int[][] solve(final int[][] board){
       b = board;
+      final long start = System.currentTimeMillis();
       if(solveMe(b) == 81){
+         final long end = System.currentTimeMillis();
+         System.out.println("It took " + (end - start) + " milliseconds to solve with Smart Ai.");
          return b;
       }
       return board;

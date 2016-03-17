@@ -16,10 +16,10 @@ public class DumbAi{
    */
    public static int[][] solve(int[][] board){
       b = board;
-      long start = System.nanoTime();
+      long start = System.currentTimeMillis();
       if(solveMe(b)){
-         long end = System.nanoTime();
-         System.out.println("It took " + (end - start)/1000000 + " milliseconds");
+         long end = System.currentTimeMillis();
+         System.out.println("It took " + (end - start) + " milliseconds to solve with Dumb Ai.");
          return b;
       }
       return board;

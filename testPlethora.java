@@ -1,10 +1,11 @@
 import java.util.Arrays;
 public class testPlethora{
    public static void main(String[] args){
+      System.out.println("Running 1000 tests");
       long dumb =0;
       long smart=0;
       int dif =0;
-      int difSum = 0;
+      double difSum = 0;
       int[][] temp = new int[9][9];
       int[][] temp2 = new int[9][9];
       long t1=0;
@@ -23,7 +24,7 @@ public class testPlethora{
          temp2 = DumbAi.solve(temp2);
          t1 = System.currentTimeMillis();
          dumb += (t1 - t2);
-         System.out.println(i);
+         System.out.println("Test Number: " + (i +1));
       }
       dumb = dumb/1000;
       smart = smart/1000;
