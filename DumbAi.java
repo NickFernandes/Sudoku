@@ -4,7 +4,7 @@
  *@author Nick Fernandes
  *@version 1.3
  */
-public class DumbAi{
+public class DumbAi implements Ai{
    private static int[][] b;
 
   /**
@@ -14,7 +14,7 @@ public class DumbAi{
    *
    *@return A solved sudoku board
    */
-   public static int[][] solve(int[][] board){
+   public  int[][] solve(int[][] board){
       b = board;
       long start = System.currentTimeMillis();
       if(solveMe(b)){

@@ -5,7 +5,7 @@
  *@version 2.1
  */
 import java.util.Arrays;
-public class SmartAi{
+public class SmartAi implements Ai{
 
    private final static int[] allowedBitFields = new int[] {
       0,       //000000000
@@ -31,7 +31,7 @@ public class SmartAi{
    *
    *@return the solved sudoku board
    */
-   public final static int[][] solve(final int[][] board){
+   public final int[][] solve(final int[][] board){
       b = board;
       final long start = System.currentTimeMillis();
       if(solveMe(b) == 81){

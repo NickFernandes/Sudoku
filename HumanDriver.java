@@ -167,7 +167,7 @@ public class HumanDriver{
             }
             System.out.println("Enter the number you wish to enter (1 - 9)");
             int replace = (int)(sc.next().charAt(0) - 48);
-            while (replace < 0 || replace > 8){
+            while (replace < 1 || replace > 9){
                System.out.println("Between 0 and 8, please:");
                replace = (int)(sc.next().charAt(0) - 48);
             }
