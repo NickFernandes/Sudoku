@@ -39,6 +39,8 @@ public class SmartAi implements Ai{
          System.out.println("It took " + (end - start) + " milliseconds to solve with Smart Ai.");
          return b;
       }
+      final long end = System.currentTimeMillis();
+      System.out.println("Could not be solved. Time Spent: " + (end - start) + " milliseconds.");
       return board;
    }
 

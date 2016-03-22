@@ -22,6 +22,8 @@ public class DumbAi implements Ai{
          System.out.println("It took " + (end - start) + " milliseconds to solve with Dumb Ai.");
          return b;
       }
+      long end = System.currentTimeMillis();
+      System.out.println("Could not be solved. Time spent: " + (end - start) + " milliseconds.");
       return board;
    }
 
