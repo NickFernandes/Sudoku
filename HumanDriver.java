@@ -66,7 +66,8 @@ public class HumanDriver{
             }
          }
          else {
-            System.out.println("Cannot read file.");
+            System.out.println("Cannot read file. Starting new game.");
+            read = false;
          }
       }
       if (!read){
